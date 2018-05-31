@@ -7,7 +7,9 @@ import sys
 from multiprocessing import Pool
 
 sys.path.append("utils")
-import pyximport; pyximport.install(setup_args={"include_dirs":np.get_include()},
+import pyximport; pyximport.install(setup_args={"include_dirs":np.get_include(),
+                                                "define_macros":[("NPY_NO_DEPRECATED_API", 
+                                                                  None)]},
                                     reload_support=True)
 import cython_fnx
 

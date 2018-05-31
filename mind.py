@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[22]:
+# In[44]:
 
 
 import warnings
@@ -27,7 +27,9 @@ from multiprocessing import Pool
 from statsmodels.sandbox.stats import multicomp
 
 sys.path.append("utils")
-import pyximport; pyximport.install(setup_args={"include_dirs":np.get_include()},
+import pyximport; pyximport.install(setup_args={"include_dirs":np.get_include(),
+                                                "define_macros":[("NPY_NO_DEPRECATED_API", 
+                                                                  None)]},
                                     reload_support=True)
 import cython_fnx
 from utils import *
