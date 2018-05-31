@@ -1,4 +1,2 @@
-data/ZBTB37__p1__tile1.chr1:173837344-173837458.plus.av.log2FC.HepG2.txt	ZBTB37__p1__tile1__plus  
-data/ZFAS1__p1__tile1.chr20:47895005-47895119.plus.av.log2FC.HepG2.txt	ZFAS1__p1__tile1__plus
-data/ZBTB37__p1__tile2.chr1:173837438-173837552.plus.av.log2FC.HepG2.txt	ZBTB37__p1__tile2__plus
-data/ZFAS1__p1__tile2.chr20:47895099-47895213.plus.av.log2FC.HepG2.txt	ZFAS1__p1__tile2__plus
+data/ZBTB37__p1__tile1.chr1:173837344-173837458.plus.av.log2FC.HepG2.new.txt	ZBTB37__p1__tile1__plus  
+data/ZFAS1__p1__tile1.chr20:47895005-47895119.plus.av.log2FC.HepG2.new.txt	ZFAS1__p1__tile1__plus

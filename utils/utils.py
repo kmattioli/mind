@@ -180,17 +180,15 @@ def moving_average(bandwidth, scores):
     scores_filt.extend([np.nan] * int(np.floor(bandwidth/2)))
     return scores_filt
 
-def in_peak(row, del_buffer, widths):
+def in_peak(row, offset, widths):
     delpos = row["delpos"]
-    rawpos = int(delpos)-del_buffer-1
+    rawpos = int(delpos)-offset
     for start, stop in widths:
         if rawpos >= start and rawpos < stop:
             return "peak"
     return "no peak"
 
-def find_peaks(peak_cutoff, seq_len, df, scores_filt, scaled_scores, bases, del_buffer, max_motif_len):
-    
-    
+def find_peaks(peak_cutoff, seq_len, df, scores_filt, scaled_scores, bases, offset, max_motif_len):
     # find tile start & end if given in the dataframe
     if "tile_chr" in df.columns and "tile_start" in df.columns and "tile_end" in df.columns:
         tile_chr = df["tile_chr"].iloc[0]
@@ -345,6 +343,6 @@ def find_peaks(peak_cutoff, seq_len, df, scores_filt, scaled_scores, bases, del_
         peak_info.append((w[0], w[1], peak_scores, peak_bases, start, end, tile_chr, tile_start, tile_end))
 
     # add peak locations to df
-    df["peak"] = df.apply(in_peak, del_buffer=del_buffer, widths=fixed_widths, axis=1)
+    df["peak"] = df.apply(in_peak, offset=offset, widths=fixed_widths, axis=1)
     
     return fixed_widths, peak_info, df

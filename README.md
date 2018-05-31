@@ -54,7 +54,7 @@ They can also have the following optional columns:
 - **tile_start**: the start position of the reference sequence, 0-based
 - **tile_end**: the end position of the reference sequence, 0-based
 
-I’ve left 4 of my example files in the `data/` directory for you to peruse. Just ignore any columns that I haven’t mentioned here, as you don’t need those to run MIND.
+I’ve left some of my example files in the `data/` directory for you to peruse. Just ignore any columns that I haven’t mentioned here, as you don’t need those to run MIND.
 
 #### Paths file
 
@@ -62,7 +62,7 @@ You need to give MIND a file with a list of paths containing the deletion files 
 
 Something like:
 ```
-data/ZBTB37__p1__tile1.chr1:173837344-173837458.plus.av.log2FC.HepG2.txt	ZBTB37__p1__tile1__plus
+data/ZBTB37__p1__tile1.chr1:173837344-173837458.plus.av.log2FC.HepG2.new.txt	ZBTB37__p1__tile1__plus
 ```
 
 I’ve left an example path file at `inputs/1__dels/deletion_files.txt`.
@@ -85,11 +85,10 @@ MIND requires the following arguments:
 
 It also accepts the following optional arguments:
 - --seed (-s): an integer number to use as a seed to numpy.random() (for reproducibility!) (default: 12345)
-- --offset (-f): # of bp that the start number in deletion files is offset from 0
-- --buffer (-b): # of bp on either flank that are not deleted from the reference sequence
+- --offset (-f): # of bp that the start number in deletion files is offset from 0 (default: 1)
 - --bandwidth (-w): width to use in moving average smoother, needs to be an odd number (default: 5)
 - --peak_cutoff (-p): cutoff to use when calling peaks (default: 0.5)
-- --n_shuffles (-n): number of times to shuffle to create the null distribution (default: 10000)
+- --n_shuffles (-n): number of times to shuffle to create the null distribution (default: 1000)
 - --tfs_expressed_file (-e): path to optional TF file described above (file #4)
 
 You can run the MIND program using the data I’ve provided as follows:

@@ -91,7 +91,6 @@ def plot_peaks(figsize, fontsize, score_type, seq_len, seq_name, window_len, wid
         trans_offset = transforms.offset_copy(seq_ax.transData, fig=fig, x=1, y=0, units='points')
     
     plt.tight_layout()
-    plt.show()
     plotname = "%s__scores_and_peaks_w%s.pdf" % (seq_name, window_len)
     fig.savefig("%s/%s" % (figs_dir, plotname), dpi="figure", bbox_inches="tight")
     plt.close()
@@ -129,5 +128,5 @@ def plot_motif_results(results, size, seq_name, fdr, figs_dir):
     g.ax_joint.legend(loc=4, frameon=True)
     
     plt.tight_layout()
-    plt.show()
     g.savefig("%s/%s__motif_results.pdf" % (figs_dir, seq_name), bbox_inches="tight", dpi="figure")
+    plt.close()

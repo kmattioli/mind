@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[22]:
 
 
 import warnings
@@ -27,7 +27,8 @@ from multiprocessing import Pool
 from statsmodels.sandbox.stats import multicomp
 
 sys.path.append("utils")
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(setup_args={"include_dirs":np.get_include()},
+                                    reload_support=True)
 import cython_fnx
 from utils import *
 from plotting_utils import *
@@ -35,76 +36,73 @@ from plotting_utils import *
 
 # ## 1. define & collect arguments
 
-# In[2]:
+# In[23]:
 
 
-# parser = argparse.ArgumentParser()
-# parser.add_argument("-s", "--seed", type=int, required=False, default=12345, 
-#                     help="numpy.random seed to use (for reproducibility)")
-# parser.add_argument("-p", "--pwm_file", type=str, required=True, 
-#                     help="path to pwm file in MEME format")
-# parser.add_argument("-d", "--deletion_info_file", type=str, required=True, 
-#                     help="path to file containing list of deletion files to analyze (full paths)")
-# parser.add_argument("-l", "--seq_len", type=int, required=True, 
-#                     help="length of sequences used in deletion MPRA")
-# parser.add_argument("-f", "--offset", type=int, required=False, default=1,
-#                     help="# bp that the start number in deletion files is offset from 0")
-# parser.add_argument("-b", "--buffer", type=int, required=False, default=0,
-#                     help="# bp that on either flank that are not deleted from the reference sequence")
-# parser.add_argument("-w", "--bandwidth", type=int, required=False, default=5,
-#                     help="bandwidth to use in moving average smoother (NOTE: should be odd)")
-# parser.add_argument("-p", "--peak_cutoff", type=float, required=False, default=0.5,
-#                     help="cutoff to use when calling peaks")
-# parser.add_argument("-t", "--score_type", type=str, required=True, 
-#                     help="either 'loss' or 'gain'")
-# parser.add_argument("-n", "--n_shuffles", type=int, required=False, default=10000,
-#                     help="# times to shuffle peak data to get null distribution")
-# parser.add_argument("-e", "--tfs_expressed_file", type=str, required=False, default=None, 
-#                     help="path to file containing list of TFs expressed in cell line of interest")
-# parser.add_argument("-c", "--cores", type=int, required=True,
-#                     help="# cores to use when computing")
-# parser.add_argument("-o", "--out_dir", type=str, required=True, 
-#                     help="directory where results will be stored")
+parser = argparse.ArgumentParser()
+parser.add_argument("-s", "--seed", type=int, required=False, default=12345, 
+                    help="numpy.random seed to use (for reproducibility)")
+parser.add_argument("-p", "--pwm_file", type=str, required=True, 
+                    help="path to pwm file in MEME format")
+parser.add_argument("-d", "--deletion_info_file", type=str, required=True, 
+                    help="path to file containing list of deletion files to analyze (full paths)")
+parser.add_argument("-l", "--seq_len", type=int, required=True, 
+                    help="length of sequences used in deletion MPRA")
+parser.add_argument("-f", "--offset", type=int, required=False, default=1,
+                    help="# bp that the start number in deletion files is offset from 0")
+parser.add_argument("-w", "--bandwidth", type=int, required=False, default=5,
+                    help="bandwidth to use in moving average smoother (NOTE: should be odd)")
+parser.add_argument("-p", "--peak_cutoff", type=float, required=False, default=0.5,
+                    help="cutoff to use when calling peaks")
+parser.add_argument("-t", "--score_type", type=str, required=True, 
+                    help="either 'loss' or 'gain'")
+parser.add_argument("-n", "--n_shuffles", type=int, required=False, default=1000,
+                    help="# times to shuffle peak data to get null distribution")
+parser.add_argument("-e", "--tfs_expressed_file", type=str, required=False, default=None, 
+                    help="path to file containing list of TFs expressed in cell line of interest")
+parser.add_argument("-c", "--cores", type=int, required=True,
+                    help="# cores to use when computing")
+parser.add_argument("-o", "--out_dir", type=str, required=True, 
+                    help="directory where results will be stored")
 
 
-# In[3]:
+# In[24]:
 
 
-# args = parser.parse_args()
-# seed = args.seed
-# pwm_file = args.pwm_file
-# deletion_info_file = args.deletion_info_file
-# seq_len = args.seq_len
-# offset = args.offset
-# buffer = args.buffer
-# bandwidth = args.bandwidth
-# peak_cutoff = args.peak_cutoff
-# score_type = args.score_type
-# n_shuffles = args.n_shuffles
-# tfs_expressed_file = args.tfs_expressed_file
-# cores = args.cores
-# out_dir = args.out_dir
+args = parser.parse_args()
+seed = args.seed
+pwm_file = args.pwm_file
+deletion_info_file = args.deletion_info_file
+seq_len = args.seq_len
+offset = args.offset
+bandwidth = args.bandwidth
+peak_cutoff = args.peak_cutoff
+score_type = args.score_type
+n_shuffles = args.n_shuffles
+tfs_expressed_file = args.tfs_expressed_file
+cores = args.cores
+out_dir = args.out_dir
 
 
-# In[4]:
+# In[25]:
 
 
-seed = 12345
-pwm_file = "inputs/0__pwm/pfm_vertebrates_meme_motifNameChanged.txt"
-deletion_info_file = "inputs/1__dels/deletion_files.txt"
-seq_len = 94
-offset = 1
-buffer = 10
-bandwidth = 5
-peak_cutoff = 0.5
-score_type = "loss"
-n_shuffles = 1000
-tfs_expressed_file = None
-cores = 4
-out_dir = "results/test"
+# defaults for debugging
+# seed = 12345
+# pwm_file = "inputs/0__pwm/pfm_vertebrates_meme_motifNameChanged.txt"
+# deletion_info_file = "inputs/1__dels/deletion_files.txt"
+# seq_len = 94
+# offset = 1
+# bandwidth = 5
+# peak_cutoff = 0.5
+# score_type = "loss"
+# n_shuffles = 1000
+# tfs_expressed_file = None
+# cores = 4
+# out_dir = "results/test"
 
 
-# In[5]:
+# In[26]:
 
 
 ### argument assertions ###
@@ -126,7 +124,7 @@ if tfs_expressed_file != None:
     assert os.path.exists(tfs_expressed_file), "--tfs_expressed_file path does not exist"
 
 
-# In[6]:
+# In[27]:
 
 
 ### set plotting defaults ###
@@ -136,28 +134,28 @@ fontsize = FONTSIZE
 
 # ## 2. import data & make out dir if needed
 
-# In[7]:
+# In[28]:
 
 
 # set seed for reproducibility!
 np.random.seed(seed)
 
 
-# In[8]:
+# In[29]:
 
 
 # read in pwm file
 motifs, motif_lens, motif_len_map = parse_pfm(pwm_file, False)
 
 
-# In[9]:
+# In[30]:
 
 
 # find max motif length
 max_motif_len = np.max(list(motif_lens))
 
 
-# In[10]:
+# In[31]:
 
 
 # read in file with paths to all of the deletion data
@@ -168,7 +166,7 @@ deletion_info["name"] = deletion_info["name"].map(str.strip)
 deletion_info = zip(list(deletion_info["path"]), list(deletion_info["name"]))
 
 
-# In[11]:
+# In[32]:
 
 
 # read in all of the deletion data and make sure it has the columns we need
@@ -187,7 +185,7 @@ for path, name in deletion_info:
     data[name] = df
 
 
-# In[12]:
+# In[33]:
 
 
 # read in the tfs expressed file, if it exists
@@ -199,7 +197,7 @@ else:
     tfs_expressed = None
 
 
-# In[13]:
+# In[34]:
 
 
 # make subdir for results files
@@ -216,7 +214,7 @@ if not os.path.exists(figs_dir):
 # ## 2. create loss or gain score
 # loss = looking for transcriptional activators; gain = looking for transcriptional repressors
 
-# In[14]:
+# In[35]:
 
 
 for seq in data.keys():
@@ -243,21 +241,9 @@ for seq in data.keys():
         df["gain_score_raw_scaled"] = scaled_scores
 
 
-# In[15]:
+# ## 3. find peaks in the sequences and write files w/ peak info
 
-
-data["ZBTB37__p1__tile1__plus"].head()
-
-
-# ## 3. find peaks in the sequences
-
-# In[16]:
-
-
-get_ipython().magic('matplotlib inline')
-
-
-# In[17]:
+# In[36]:
 
 
 # make subdir for peak figures
@@ -266,7 +252,16 @@ if not os.path.exists(peak_figs_dir):
     os.makedirs(peak_figs_dir)
 
 
-# In[18]:
+# In[37]:
+
+
+# make subdir for peak results
+peak_res_dir = "%s/0__ntd_scores" % res_dir
+if not os.path.exists(peak_res_dir):
+    os.makedirs(peak_res_dir)
+
+
+# In[38]:
 
 
 score_col = "%s_score_raw_scaled" % (score_type)
@@ -274,7 +269,7 @@ data_peaks = {}
 peak_dfs = {}
 
 for seq in data.keys():
-    print(seq)
+    print("plotting: %s" % seq)
     seq_name = "%s__%s" % (seq, score_type)
 
     # extract bases & scores from df
@@ -290,11 +285,14 @@ for seq in data.keys():
     
     # find peaks
     widths, peak_info, df = find_peaks(peak_cutoff, seq_len, df, 
-                                       scores_filt, scaled_scores, bases, buffer, 
+                                       scores_filt, scaled_scores, bases, offset, 
                                        max_motif_len)
     data_peaks[seq] = peak_info
     peak_dfs[seq] = df
-
+    
+    # write file
+    df.to_csv("%s/%s.%s_score.txt" % (peak_res_dir, seq, score_type), sep="\t", index=False)
+    
     # plot peaks
     plot_peaks((4.9, 1.4), 6, score_type, seq_len, seq_name, bandwidth, widths, raw_scores, yerrs, scores_filt, 
                scaled_scores, bases, peak_figs_dir)
@@ -302,15 +300,18 @@ for seq in data.keys():
 
 # ## 4. find motifs in the peaks
 
-# In[19]:
+# In[39]:
 
 
+print("")
+print("mapping motifs...")
 results_dict = get_all_results(cores, data_peaks, motifs, n_shuffles, seed, parallel=True)
+print("")
 
 
 # ## 5. correct results for mult. hyp. & plot
 
-# In[20]:
+# In[40]:
 
 
 # make subdir for results figures
@@ -319,7 +320,16 @@ if not os.path.exists(res_figs_dir):
     os.makedirs(res_figs_dir)
 
 
-# In[22]:
+# In[41]:
+
+
+# make subdir for results figures
+motif_res_dir = "%s/1__motif_scores" % res_dir
+if not os.path.exists(motif_res_dir):
+    os.makedirs(motif_res_dir)
+
+
+# In[42]:
 
 
 # check motifs at 3 FDRs (since every peak is different)
@@ -388,4 +398,10 @@ for seq in results_dict:
         # plot the all results only
         plot_motif_results(df, 2.5, name, alpha, res_figs_dir)
         
+
+
+# In[ ]:
+
+
+
 
