@@ -2,11 +2,11 @@ name: mind
 channels:
 - defaults
 dependencies:
-- cython=0.26.1=py36h21c49d0_0
-- matplotlib=2.0.2=py36h2acb4ad_1
-- numpy=1.13.1=py36h5bc529a_2
-- pandas=0.20.3=py36h6022372_2
-- python=3.6.5=hc3d631a_2
-- seaborn=0.8.1=py36hfad7ec4_0
-- statsmodels=0.8.0=py36h8533d0b_0
+- cython=0.26=py36_0
+- matplotlib=2.0.2=np113py36_1
+- numpy=1.13.1=py36_0
+- pandas=0.20.3=py36_0
+- python=3.6.2
+- seaborn=0.8=py36_0
+- statsmodels=0.8.0=py36_0
 
