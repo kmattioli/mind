@@ -178,9 +178,11 @@ for path, name in deletion_info:
     assert os.path.exists(path), "path to deletion data %s does not exist" % path
     df = pd.read_table(path, sep="\t")
     
+    assert "delpos" in df.columns, "deletion file %s does not have 'delpos' as a column name" % path
     assert "seq" in df.columns, "deletion file %s does not have 'seq' as a column name" % path
     assert "mean.log2FC" in df.columns, "deletion file %s does not have 'mean.log2FC' as a column name" % path
     assert "sd" in df.columns, "deletion file %s does not have 'sd' as a column name" % path
+    assert "se" in df.columns, "deletion file %s does not have 'se' as a column name" % path
     
     data[name] = df
 
@@ -386,10 +388,4 @@ for seq in results_dict:
         # plot the all results only
         plot_motif_results(df, 2.5, name, alpha, res_figs_dir)
         
-
-
-# In[ ]:
-
-
-
 
