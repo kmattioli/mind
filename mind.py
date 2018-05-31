@@ -52,7 +52,7 @@ parser.add_argument("-f", "--offset", type=int, required=False, default=1,
                     help="# bp that the start number in deletion files is offset from 0")
 parser.add_argument("-w", "--bandwidth", type=int, required=False, default=5,
                     help="bandwidth to use in moving average smoother (NOTE: should be odd)")
-parser.add_argument("-p", "--peak_cutoff", type=float, required=False, default=0.5,
+parser.add_argument("-k", "--peak_cutoff", type=float, required=False, default=0.5,
                     help="cutoff to use when calling peaks")
 parser.add_argument("-t", "--score_type", type=str, required=True, 
                     help="either 'loss' or 'gain'")

@@ -7,7 +7,8 @@ import sys
 from multiprocessing import Pool
 
 sys.path.append("utils")
-import pyximport; pyximport.install()
+import pyximport; pyximport.install(setup_args={"include_dirs":np.get_include()},
+                                    reload_support=True)
 import cython_fnx
 
 def get_peak_results(peak_start, tile_locs, mat, motifs, n_shuf, seed):
