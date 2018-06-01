@@ -1,3 +1,5 @@
+<img src="docs/mind.png">
+
 # MIND
 #### Motif Identification by Nucleotide Deletion
 An algorithm to find likely transcription factor (TF) binding sites in sequences using single-nucleotide deletions in massively parallel reporter assays
@@ -12,8 +14,9 @@ MIND runs on Python 3 and uses a handful of packages:
 - seaborn (0.8)
 - statsmodels (0.8.0)
 
-You can either install these by hand using your favorite package manager or you can use [conda](https://conda.io/docs/user-guide/getting-started.html) to directly install the environment that I use to run MIND via the following command:
+You can either install these by hand using your favorite package manager or you can use [conda](https://conda.io/docs/user-guide/getting-started.html) to directly install the environment that I use to run MIND via the following command (after cloning or downloading this repository):
 ```
+	cd utils
 	conda env create -f environment.yml
 	source activate mind
 ```
