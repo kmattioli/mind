@@ -1,1 +1,1 @@
-from common.cython import make_ext
+from cython_common import make_ext
