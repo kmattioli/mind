@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[5]:
 
 
 import warnings
@@ -26,7 +26,11 @@ from matplotlib import transforms
 from multiprocessing import Pool
 from statsmodels.sandbox.stats import multicomp
 
-sys.path.append("%s/utils" % os.getcwd())
+try:
+    sys.path.append("%s/utils" % os.path.dirname(os.path.abspath(__file__)))
+except NameError:
+    sys.path.append("%s/utils" % os.getcwd())
+    
 import pyximport; pyximport.install(setup_args={"include_dirs":np.get_include(),
                                                 "define_macros":[("NPY_NO_DEPRECATED_API", 
                                                                   None)]},
