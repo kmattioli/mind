@@ -1,12 +1,6 @@
 
 # coding: utf-8
 
-# In[3]:
-
-
-get_ipython().system('pwd')
-
-
 # In[1]:
 
 
