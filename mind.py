@@ -1,7 +1,13 @@
 
 # coding: utf-8
 
-# In[44]:
+# In[3]:
+
+
+get_ipython().system('pwd')
+
+
+# In[1]:
 
 
 import warnings
@@ -26,7 +32,7 @@ from matplotlib import transforms
 from multiprocessing import Pool
 from statsmodels.sandbox.stats import multicomp
 
-sys.path.append("utils")
+sys.path.append("%s/utils" % os.getcwd())
 import pyximport; pyximport.install(setup_args={"include_dirs":np.get_include(),
                                                 "define_macros":[("NPY_NO_DEPRECATED_API", 
                                                                   None)]},
@@ -126,7 +132,7 @@ if tfs_expressed_file != None:
     assert os.path.exists(tfs_expressed_file), "--tfs_expressed_file path does not exist"
 
 
-# In[27]:
+# In[2]:
 
 
 ### set plotting defaults ###
