@@ -123,7 +123,6 @@ def get_motif_results(np.ndarray pwm, double info_content, np.ndarray seq, int p
     for n in range(n_shuf):
         shuf_max_score = -100
         np.random.shuffle(c_seq)
-        np.random.shuffle(c_seq.T)
         shuf_motif_scores = slide_motifs_across_seq(c_seq, motif_len, pwm, info_content)
         
         for i in range(n_scores):
