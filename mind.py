@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[5]:
+# In[1]:
 
 
 import warnings
@@ -42,7 +42,7 @@ from plotting_utils import *
 
 # ## 1. define & collect arguments
 
-# In[23]:
+# In[2]:
 
 
 parser = argparse.ArgumentParser()
@@ -72,7 +72,7 @@ parser.add_argument("-o", "--out_dir", type=str, required=True,
                     help="directory where results will be stored")
 
 
-# In[24]:
+# In[3]:
 
 
 args = parser.parse_args()
@@ -90,7 +90,7 @@ cores = args.cores
 out_dir = args.out_dir
 
 
-# In[25]:
+# In[ ]:
 
 
 # defaults for debugging
@@ -108,7 +108,7 @@ out_dir = args.out_dir
 # out_dir = "results/test"
 
 
-# In[26]:
+# In[ ]:
 
 
 ### argument assertions ###
@@ -130,7 +130,7 @@ if tfs_expressed_file != None:
     assert os.path.exists(tfs_expressed_file), "--tfs_expressed_file path does not exist"
 
 
-# In[2]:
+# In[ ]:
 
 
 ### set plotting defaults ###
@@ -140,28 +140,28 @@ fontsize = FONTSIZE
 
 # ## 2. import data & make out dir if needed
 
-# In[28]:
+# In[ ]:
 
 
 # set seed for reproducibility!
 np.random.seed(seed)
 
 
-# In[29]:
+# In[ ]:
 
 
 # read in pwm file
 motifs, motif_lens, motif_len_map = parse_pfm(pwm_file, False)
 
 
-# In[30]:
+# In[ ]:
 
 
 # find max motif length
 max_motif_len = np.max(list(motif_lens))
 
 
-# In[31]:
+# In[ ]:
 
 
 # read in file with paths to all of the deletion data
@@ -172,7 +172,7 @@ deletion_info["name"] = deletion_info["name"].map(str.strip)
 deletion_info = zip(list(deletion_info["path"]), list(deletion_info["name"]))
 
 
-# In[32]:
+# In[ ]:
 
 
 # read in all of the deletion data and make sure it has the columns we need
@@ -191,7 +191,7 @@ for path, name in deletion_info:
     data[name] = df
 
 
-# In[33]:
+# In[ ]:
 
 
 # read in the tfs expressed file, if it exists
@@ -203,7 +203,7 @@ else:
     tfs_expressed = None
 
 
-# In[34]:
+# In[ ]:
 
 
 # make subdir for results files
@@ -220,7 +220,7 @@ if not os.path.exists(figs_dir):
 # ## 2. create loss or gain score
 # loss = looking for transcriptional activators; gain = looking for transcriptional repressors
 
-# In[35]:
+# In[ ]:
 
 
 for seq in data.keys():
@@ -249,7 +249,7 @@ for seq in data.keys():
 
 # ## 3. find peaks in the sequences and write files w/ peak info
 
-# In[36]:
+# In[ ]:
 
 
 # make subdir for peak figures
@@ -258,7 +258,7 @@ if not os.path.exists(peak_figs_dir):
     os.makedirs(peak_figs_dir)
 
 
-# In[37]:
+# In[ ]:
 
 
 # make subdir for peak results
@@ -267,7 +267,7 @@ if not os.path.exists(peak_res_dir):
     os.makedirs(peak_res_dir)
 
 
-# In[38]:
+# In[ ]:
 
 
 score_col = "%s_score_raw_scaled" % (score_type)
@@ -306,7 +306,7 @@ for seq in data.keys():
 
 # ## 4. find motifs in the peaks
 
-# In[39]:
+# In[ ]:
 
 
 print("")
@@ -317,7 +317,7 @@ print("")
 
 # ## 5. correct results for mult. hyp. & plot
 
-# In[40]:
+# In[ ]:
 
 
 # make subdir for results figures
@@ -326,7 +326,7 @@ if not os.path.exists(res_figs_dir):
     os.makedirs(res_figs_dir)
 
 
-# In[41]:
+# In[ ]:
 
 
 # make subdir for results figures
@@ -335,7 +335,7 @@ if not os.path.exists(motif_res_dir):
     os.makedirs(motif_res_dir)
 
 
-# In[42]:
+# In[ ]:
 
 
 # check motifs at 3 FDRs (since every peak is different)
@@ -384,7 +384,7 @@ for seq in results_dict:
         
         # if a list of TFs expressed was provided, filter to those only & adjust those only
         if tfs_expressed != None:
-            df_sub = df[df["motif"].isin(tfs_on)]
+            df_sub = df[df["motif"].isin(tfs_expressed)]
         
             padj = multicomp.multipletests(list(df_sub["pval"]), method="fdr_bh")[1]
             df_sub["padj"] = padj
