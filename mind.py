@@ -379,7 +379,7 @@ for seq in results_dict:
         print("ALL MOTIFS: found %s motifs at %s FDR" % (len(sig_df), alpha))
         df["fdr_cutoff"] = alpha
         df = df.sort_values(by="score", ascending=False)
-        df.to_csv("%s/%s.%s__results.txt" % (res_dir, name, score_type), sep="\t", index=False)
+        df.to_csv("%s/%s.%s__results.txt" % (motif_res_dir, name, score_type), sep="\t", index=False)
 
         
         # if a list of TFs expressed was provided, filter to those only & adjust those only
@@ -398,7 +398,7 @@ for seq in results_dict:
             print("ONLY TFS EXPRESSED: found %s motifs at %s FDR" % (len(sig_df), alpha))
             df_sub["fdr_cutoff"] = alpha
             df_sub = df_sub.sort_values(by="score", ascending=False)
-            df_sub.to_csv("%s/%s.%s__results.expr_filt.txt" % (res_dir, name, score_type), sep="\t", 
+            df_sub.to_csv("%s/%s.%s__results.expr_filt.txt" % (motif_res_dir, name, score_type), sep="\t", 
                           index=False)
         
         # plot the all results only
