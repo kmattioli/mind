@@ -62,6 +62,8 @@ parser.add_argument("-k", "--peak_cutoff", type=float, required=False, default=0
                     help="cutoff to use when calling peaks")
 parser.add_argument("-t", "--score_type", type=str, required=True, 
                     help="either 'loss' or 'gain'")
+parser.add_argument("-z", "--figure_size", type=tuple, required=False, default=(4.9, 1.4),
+                    help="fig size to use when plotting the sequence/deletion data")
 parser.add_argument("-n", "--n_shuffles", type=int, required=False, default=1000,
                     help="# times to shuffle peak data to get null distribution")
 parser.add_argument("-e", "--tfs_expressed_file", type=str, required=False, default=None, 
@@ -84,6 +86,7 @@ offset = args.offset
 bandwidth = args.bandwidth
 peak_cutoff = args.peak_cutoff
 score_type = args.score_type
+figure_size = args.figure_size
 n_shuffles = args.n_shuffles
 tfs_expressed_file = args.tfs_expressed_file
 cores = args.cores
@@ -300,7 +303,7 @@ for seq in data.keys():
     df.to_csv("%s/%s.%s_score.txt" % (peak_res_dir, seq, score_type), sep="\t", index=False)
     
     # plot peaks
-    plot_peaks((4.9, 1.4), 6, score_type, seq_len, seq_name, bandwidth, widths, raw_scores, yerrs, scores_filt, 
+    plot_peaks(figure_size, 6, score_type, seq_len, seq_name, bandwidth, widths, raw_scores, yerrs, scores_filt, 
                scaled_scores, bases, peak_figs_dir)
 
 
