@@ -62,7 +62,7 @@ parser.add_argument("-k", "--peak_cutoff", type=float, required=False, default=0
                     help="cutoff to use when calling peaks")
 parser.add_argument("-t", "--score_type", type=str, required=True, 
                     help="either 'loss' or 'gain'")
-parser.add_argument("-z", "--figure_size", type=tuple, required=False, default=(4.9, 1.4),
+parser.add_argument("-z", "--figure_size", type=str, required=False, default='(4.9,1.4)',
                     help="fig size to use when plotting the sequence/deletion data")
 parser.add_argument("-n", "--n_shuffles", type=int, required=False, default=1000,
                     help="# times to shuffle peak data to get null distribution")
@@ -86,7 +86,7 @@ offset = args.offset
 bandwidth = args.bandwidth
 peak_cutoff = args.peak_cutoff
 score_type = args.score_type
-figure_size = args.figure_size
+figure_size = eval(args.figure_size)
 n_shuffles = args.n_shuffles
 tfs_expressed_file = args.tfs_expressed_file
 cores = args.cores
