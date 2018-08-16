@@ -91,6 +91,7 @@ It also accepts the following optional arguments:
 - --offset (-f): # of bp that the start number in deletion files is offset from 0 (default: 1)
 - --bandwidth (-w): width to use in moving average smoother, needs to be an odd number (default: 5)
 - --peak_cutoff (-k): cutoff to use when calling peaks (default: 0.5)
+- --figure_size (-z): figure size to use when plotting the deletion/sequence barplot (default: (4.9, 1.4))
 - --n_shuffles (-n): number of times to shuffle to create the null distribution (default: 1000)
 - --tfs_expressed_file (-e): path to optional TF file described above (file #4)
 
